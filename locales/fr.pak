@@ -1,7 +1,0 @@
-{
-   "speech": {
-      "air": "À $$, La qualité de l'air extérieur est $$, avec un indice de $$.",
-      "errorHttp": "erreur http.",
-      "errorAccess": "Je n'arrive pas à récupérer la qualité de l'air."
-   }
-}
