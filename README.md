@@ -3,6 +3,8 @@ Récupère la qualité de l’air extérieur en temps réel.
 
 - This plugin is an add-on for the [A.V.A.T.A.R](https://avatar-home-automation.github.io/docs) framework.
 
+- Geolocalise automatique votre ville
+
 ## 🎯 Usage
 Commandes :
 - quel est la qualité de l’air extérieur 
