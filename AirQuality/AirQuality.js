@@ -28,7 +28,7 @@ export async function action(data, callback) {
 
 const getAir = async (client, L) => {
 
-	const apiKey = "27a184e2-a3e1-409f-b26c-a6dcd304fa6f";
+	const apiKey = Config.modules.AirQuality.apiKey;
 
 	try {
 
