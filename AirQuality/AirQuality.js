@@ -2,18 +2,17 @@ export async function init () {
     await Avatar.lang.addPluginPak('AirQuality');
 }
 
-
 export async function action(data, callback) {
 
-	 const L = await Avatar.lang.getPak('AirQuality', data.language);
-
 	try {
+
+		const L = await Avatar.lang.getPak('AirQuality', data.language);
 
 		const tblActions = {
 			getAir: async () => await getAir(data.client, L)
 		};
 
-		info("AirQuality:", data.action.command, L.get("plugin.from"), data.client);
+		info("AirQuality:", data.action.command, "from", data.client);
 
 		if (tblActions[data.action.command]) {
 			await tblActions[data.action.command]();
@@ -33,9 +32,7 @@ const getAir = async (client, L) => {
 
 	try {
 
-		const response = await fetch(
-			`http://api.airvisual.com/v2/nearest_city?key=${apiKey}`
-		);
+		const response = await fetch(`http://api.airvisual.com/v2/nearest_city?key=${apiKey}`);
 
 		if (!response.ok) {
 			throw new Error(L.get("speech.errorHttp" + response.status));
@@ -47,17 +44,12 @@ const getAir = async (client, L) => {
 		const indice = result.data.current.pollution.aqicn;
 		const air = getAirQuality(indice);
 
-		Avatar.speak(L.get(["speech.air", town, air, indice]), client, () => { Avatar.Speech.end(client) });
+		Avatar.speak(L.get("speech.air", town, air, indice), client, () => { Avatar.Speech.end(client) });
 
 	 } catch (err) {
 	Avatar.speak(`${L.get("speech.errorAccess")}, ${err.message}`, client, () => {Avatar.Speech.end(client)});
 	};
 }
-
-
-// ======================================================
-// INTERPRETATION INDICE AQI
-// ======================================================
 
 const getAirQuality = (indice) => {
 
@@ -68,7 +60,3 @@ const getAirQuality = (indice) => {
 	if (indice <= 300) return "très mauvaise";
 	return "dangereuse";
 }
-
-
-
-
