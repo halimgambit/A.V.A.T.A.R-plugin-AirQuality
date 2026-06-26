@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 export async function init () {
     await Avatar.lang.addPluginPak('AirQuality');
 }
