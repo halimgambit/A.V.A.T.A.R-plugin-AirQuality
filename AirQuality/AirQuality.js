@@ -49,8 +49,9 @@ const getAir = async (client, L) => {
 		Avatar.speak(L.get("speech.air", town, air, indice), client, () => { Avatar.Speech.end(client) });
 
 	 } catch (err) {
-	Avatar.speak(`${L.get("speech.errorAccess")}, ${err.message}`, client, () => {Avatar.Speech.end(client)});
-	};
+		 error("Air Quality ERROR:", err.message);
+		 Avatar.speak(L.get(["speech.errorAccess"]), client, () => {Avatar.Speech.end(client)});
+	}
 }
 
 const getAirQuality = (indice) => {
