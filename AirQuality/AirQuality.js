@@ -4,11 +4,12 @@ export async function init () {
     await Avatar.lang.addPluginPak('AirQuality');
 }
 
+
 export async function action(data, callback) {
 
-	try {
+	 const L = await Avatar.lang.getPak('AirQuality', data.language);
 
-		const L = await Avatar.lang.getPak('AirQuality', data.language);
+	try {
 
 		const tblActions = {
 			getAir: async () => await getAir(data.client, L)
@@ -30,14 +31,14 @@ export async function action(data, callback) {
 
 const getAir = async (client, L) => {
 
-	const apiKey = Config.modules.AirQuality.apiKey;
-
 	try {
+
+		const apiKey = Config.modules.AirQuality.apiKey;
 
 		const response = await fetch(`http://api.airvisual.com/v2/nearest_city?key=${apiKey}`);
 
 		if (!response.ok) {
-			throw new Error(L.get("speech.errorHttp" + response.status));
+			throw new Error(L.get(["speech.errorHttp" + response.status]));
 		}
 
 		const result = await response.json();
@@ -46,12 +47,16 @@ const getAir = async (client, L) => {
 		const indice = result.data.current.pollution.aqicn;
 		const air = getAirQuality(indice);
 
-		Avatar.speak(L.get("speech.air", town, air, indice), client, () => { Avatar.Speech.end(client) });
+		const texte = L.get(["speech.air", town, air, indice]);
+
+		info(texte);
+
+		Avatar.speak(texte, client, () => { Avatar.Speech.end(client)});
 
 	 } catch (err) {
 		 error("Air Quality ERROR:", err.message);
 		 Avatar.speak(L.get(["speech.errorAccess"]), client, () => {Avatar.Speech.end(client)});
-	}
+	};
 }
 
 const getAirQuality = (indice) => {
