@@ -12,24 +12,25 @@ export async function action(data, callback) {
 	try {
 
 		const tblActions = {
-			getAir: async () => await getAir(data.client, L)
+			getAir: async () => await getAir(data.client, L, callback)
 		};
 
 		info("AirQuality:", data.action.command, "from", data.client);
 
 		if (tblActions[data.action.command]) {
-			await tblActions[data.action.command]();
-		}
+                await tblActions[data.action.command]();
+            } else {
+                callback();
+            }
 
 	} catch (err) {
 		if (data.client) Avatar.Speech.end(data.client);
 		if (err.message) error(err.message);
+		callback();
 	}
-
-	callback();
 }
 
-const getAir = async (client, L) => {
+const getAir = async (client, L, callback) => {
 
 	try {
 
@@ -51,11 +52,15 @@ const getAir = async (client, L) => {
 
 		info(texte);
 
-		Avatar.speak(texte, client, () => { Avatar.Speech.end(client)});
+		Avatar.speak(texte, client, () => {
+			callback();
+		});
 
 	 } catch (err) {
 		 error("Air Quality ERROR:", err.message);
-		 Avatar.speak(L.get(["speech.errorAccess"]), client, () => {Avatar.Speech.end(client)});
+		 Avatar.speak(L.get(["speech.errorAccess"]), client, () => {
+			callback();
+		});
 	};
 }
 
